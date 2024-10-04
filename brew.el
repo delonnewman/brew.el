@@ -19,6 +19,8 @@
 ;;
 ;;; Code:
 
+;; See https://gitlab.com/emacs-guix/emacs-guix
+
 (defvar brew-command-path "/opt/homebrew/bin/brew")
 
 (let ((buffer nil))
