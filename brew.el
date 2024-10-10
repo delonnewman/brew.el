@@ -103,7 +103,7 @@
    ("s" "System stats" brew-info-stats)])
 
 
-(transient-define-suffix brew-upgrade-one (formula-or-cask)
+(transient-define-suffix brew-upgrade-formula (formula-or-cask)
   :transient t
   :description "Upgrade a formula or cask"
   (interactive "sEnter formula or cask name: ")
@@ -124,7 +124,7 @@
 (transient-define-prefix brew-upgrade ()
   "Homebrew upgrade command"
   ["Homebrew Upgrade"
-   ("u" "Formula or Cask" brew-upgrade-one)
+   ("u" "Formula or Cask" brew-upgrade-formula)
    ("a" "All" brew-upgrade-all)])
 
 
@@ -193,6 +193,7 @@
    ("u" "Update" brew-update)
    ("U" "Upgrade" brew-upgrade)]
   [(brew-describe-command)])
+
 
 (provide 'brew)
 ;;; brew.el ends here
