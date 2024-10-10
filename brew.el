@@ -44,6 +44,16 @@
    (brew--get-buffer)))
 
 
+(transient-define-suffix brew-config ()
+  :transient t
+  :key "c"
+  :description "Show Homebrew and system configuration info"
+  (interactive)
+  (async-shell-command
+   (format "%s config" brew-command-path)
+   (brew--get-buffer)))
+
+
 (transient-define-suffix brew-list-files (formula-or-cask)
   :transient t
   :key "L"
@@ -84,6 +94,16 @@
    (brew--get-buffer)))
 
 
+(transient-define-suffix brew-uninstall (formula-or-cask)
+  :transient t
+  :key "r"
+  :description "Uninstall a formula or cask"
+  (interactive "sEnter formula or cask name: ")
+  (async-shell-command
+   (format "%s install %s" brew-command-path formula-or-cask)
+   (brew--get-buffer)))
+
+
 (transient-define-suffix brew-update ()
   :transient t
   :key "u"
@@ -97,7 +117,7 @@
 (transient-define-suffix brew-describe-command (command)
   :transient t
   :key "H"
-  :description "Display help information for command."
+  :description "Display help information for command"
   (interactive "sEnter command name: ")
   (async-shell-command
    (format "%s help %s" brew-command-path command)
@@ -117,14 +137,16 @@
 (transient-define-prefix brew ()
   "Interact with Homebrew"
   ["Information"
-   (brew-search)
-   (brew-list)
-   (brew-list-files)
-   (brew-info)]
+   ("s" "Search" brew-search)
+   ("l" "List all" brew-list)
+   ("L" "List files" brew-list-files)
+   ("i" "Formula info" brew-info)
+   ("c" "Configuration" brew-config)]
   ["Actions"
-   (brew-install)
-   (brew-update)
-   (brew-upgrade)]
+   ("I" "Install" brew-install)
+   ("r" "Uninstall" brew-uninstall)
+   ("u" "Update" brew-update)
+   ("U" "Upgrade" brew-upgrade)]
   [(brew-describe-command)])
 
 (provide 'brew)
