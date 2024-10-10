@@ -71,9 +71,8 @@
    (brew--get-buffer)))
 
 
-(transient-define-suffix brew-upgrade (formula-or-cask)
+(transient-define-suffix brew-upgrade-one (formula-or-cask)
   :transient t
-  :key "U"
   :description "Upgrade a formula or cask"
   (interactive "sEnter formula or cask name: ")
   (async-shell-command
@@ -81,6 +80,23 @@
    (brew--get-buffer)))
 
 
+(transient-define-suffix brew-upgrade-all ()
+  :transient t
+  :description "Upgrade any outdated casks and formulae"
+  (interactive)
+  (async-shell-command
+   (format "%s upgrade" brew-command-path)
+   (brew--get-buffer)))
+
+
+(transient-define-prefix brew-upgrade ()
+  "Homebrew upgrade command"
+  ["Homebrew Upgrade"
+   ("u" "Formula or Cask" brew-upgrade-one)
+   ("a" "All" brew-upgrade-all)])
+
+
+;; TODO: add suffix for setting flags
 (transient-define-suffix brew-install (formula-or-cask)
   :transient t
   :key "I"
@@ -143,7 +159,8 @@
    ("I" "Install" brew-install)
    ("r" "Uninstall" brew-uninstall)
    ("u" "Update" brew-update)
-   ("U" "Upgrade" brew-upgrade)]
+   ("U" "Upgrade" brew-upgrade)
+   ]
   [(brew-describe-command)])
 
 (provide 'brew)
