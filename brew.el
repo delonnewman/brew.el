@@ -19,9 +19,6 @@
 ;;
 ;;; Code:
 
-;; See https://gitlab.com/emacs-guix/emacs-guix
-;; Example transient menu https://github.com/kickingvegas/casual-dired/blob/main/lisp/casual-dired.el
-
 (require 'transient)
 
 (defvar brew-command-path "/opt/homebrew/bin/brew")
