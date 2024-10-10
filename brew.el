@@ -66,7 +66,17 @@
    (brew--get-buffer)))
 
 
-(transient-define-suffix brew-info (formula-or-cask)
+(transient-define-suffix brew-dependencies (formula-or-cask)
+  :transient t
+  :key "i"
+  :description "Show dependencies for formula"
+  (interactive "sEnter formula or cask name: ")
+  (async-shell-command
+   (format "%s deps --tree %s" brew-command-path formula-or-cask)
+   (brew--get-buffer)))
+
+
+(transient-define-suffix brew-info-formula (formula-or-cask)
   :transient t
   :key "i"
   :description "Show summary of information about a formula or cask"
@@ -74,6 +84,23 @@
   (async-shell-command
    (format "%s info %s" brew-command-path formula-or-cask)
    (brew--get-buffer)))
+
+
+(transient-define-suffix brew-info-stats ()
+  :transient t
+  :key "i"
+  :description "Show stats for Hombrew installation"
+  (interactive)
+  (async-shell-command
+   (format "%s info" brew-command-path)
+   (brew--get-buffer)))
+
+
+(transient-define-prefix brew-info ()
+  "Homebrew info command"
+  ["Homebrew Info"
+   ("f" "Formula or cask info" brew-info-formula)
+   ("s" "System stats" brew-info-stats)])
 
 
 (transient-define-suffix brew-upgrade-one (formula-or-cask)
@@ -157,7 +184,8 @@
   ["Information"
    ("s" "Search" brew-search)
    ("l" "List" brew-list)
-   ("i" "Formula info" brew-info)
+   ("i" "Info" brew-info)
+   ("d" "Dependencies" brew-dependencies)
    ("c" "Configuration" brew-config)]
   ["Actions"
    ("I" "Install" brew-install)
