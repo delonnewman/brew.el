@@ -31,14 +31,29 @@
       (setq buffer (generate-new-buffer "*homebrew output*")))))
 
 
-(transient-define-suffix brew-list ()
+(transient-define-suffix brew-list-all ()
   :transient t
-  :key "l"
   :description "List all installed formulae and casks"
   (interactive)
   (async-shell-command
    (format "%s list -1" brew-command-path)
    (brew--get-buffer)))
+
+
+(transient-define-suffix brew-list-files (formula-or-cask)
+  :transient t
+  :description "List files associated with the formula or cask"
+  (interactive "sEnter formula or cask name: ")
+  (async-shell-command
+   (format "%s list %s" brew-command-path formula-or-cask)
+   (brew--get-buffer)))
+
+
+(transient-define-prefix brew-list ()
+  "Homebrew list command"
+  ["Homebrew List"
+   ("f" "Files associated with a formula" brew-list-files)
+   ("a" "All" brew-list-all)])
 
 
 (transient-define-suffix brew-config ()
@@ -48,16 +63,6 @@
   (interactive)
   (async-shell-command
    (format "%s config" brew-command-path)
-   (brew--get-buffer)))
-
-
-(transient-define-suffix brew-list-files (formula-or-cask)
-  :transient t
-  :key "L"
-  :description "List files associated with the formula or cask"
-  (interactive "sEnter formula or cask name: ")
-  (async-shell-command
-   (format "%s list %s" brew-command-path formula-or-cask)
    (brew--get-buffer)))
 
 
@@ -96,7 +101,7 @@
    ("a" "All" brew-upgrade-all)])
 
 
-;; TODO: add suffix for setting flags
+;; TODO: add prefix for setting flags
 (transient-define-suffix brew-install (formula-or-cask)
   :transient t
   :key "I"
@@ -151,16 +156,14 @@
   "Interact with Homebrew"
   ["Information"
    ("s" "Search" brew-search)
-   ("l" "List all" brew-list)
-   ("L" "List files" brew-list-files)
+   ("l" "List" brew-list)
    ("i" "Formula info" brew-info)
    ("c" "Configuration" brew-config)]
   ["Actions"
    ("I" "Install" brew-install)
    ("r" "Uninstall" brew-uninstall)
    ("u" "Update" brew-update)
-   ("U" "Upgrade" brew-upgrade)
-   ]
+   ("U" "Upgrade" brew-upgrade)]
   [(brew-describe-command)])
 
 (provide 'brew)
