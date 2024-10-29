@@ -21,6 +21,7 @@
 
 (require 'transient)
 
+
 (defvar brew-command-path "/opt/homebrew/bin/brew")
 
 
@@ -31,21 +32,31 @@
       (setq buffer (generate-new-buffer "*homebrew output*")))))
 
 
+(defun brew--list-all-command ()
+  (format "%s list -1" brew-command-path))
+
+
 (transient-define-suffix brew-list-all ()
   :transient t
   :description "List all installed formulae and casks"
   (interactive)
+  (message "%s" (brew--list-all-command))
   (async-shell-command
-   (format "%s list -1" brew-command-path)
+   (brew--list-all-command)
    (brew--get-buffer)))
+
+
+(defun brew--list-files-command (formula-or-cask)
+  (format "%s list %s" brew-command-path formula-or-cask))
 
 
 (transient-define-suffix brew-list-files (formula-or-cask)
   :transient t
   :description "List files associated with the formula or cask"
   (interactive "sEnter formula or cask name: ")
+  (message "%s" (brew--list-files-command formula-or-cask))
   (async-shell-command
-   (format "%s list %s" brew-command-path formula-or-cask)
+   (brew--list-files-command formula-or-cask)
    (brew--get-buffer)))
 
 
