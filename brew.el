@@ -60,10 +60,25 @@
    (brew--get-buffer)))
 
 
+(defun brew--list-outdated-command ()
+  (format "%s outdated" brew-command-path))
+
+
+(transient-define-suffix brew-list-outdated ()
+  :transient t
+  :description "List outdated formulae and casks"
+  (interactive)
+  (message "%s" (brew--list-outdated-command))
+  (async-shell-command
+   (brew--list-outdated-command)
+   (brew--get-buffer)))
+
+
 (transient-define-prefix brew-list ()
   "Homebrew list command"
   ["Homebrew List"
    ("f" "Files associated with a formula" brew-list-files)
+   ("o" "Outdated" brew-list-outdated)
    ("a" "All" brew-list-all)])
 
 
