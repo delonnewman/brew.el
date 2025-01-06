@@ -175,6 +175,16 @@
    (brew--get-buffer)))
 
 
+(transient-define-suffix brew-reinstall (formula-or-cask)
+  :transient t
+  :key "R"
+  :description "Reinstall a formula or cask"
+  (interactive "sEnter formula or cask name: ")
+  (async-shell-command
+   (format "%s reinstall %s" brew-command-path formula-or-cask)
+   (brew--get-buffer)))
+
+
 (transient-define-suffix brew-update ()
   :transient t
   :key "u"
@@ -216,6 +226,7 @@
   ["Actions"
    ("I" "Install" brew-install)
    ("r" "Uninstall" brew-uninstall)
+   ("R" "Reinstall" brew-reinstall)
    ("u" "Update" brew-update)
    ("U" "Upgrade" brew-upgrade)]
   [(brew-describe-command)])
