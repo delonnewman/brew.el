@@ -171,7 +171,7 @@
   :description "Uninstall a formula or cask"
   (interactive "sEnter formula or cask name: ")
   (async-shell-command
-   (format "%s install %s" brew-command-path formula-or-cask)
+   (format "%s uninstall %s" brew-command-path formula-or-cask)
    (brew--get-buffer)))
 
 
